@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="br.dev.fscarmo.sudoku.controllers.PositionController"
+      prefWidth="48.0"
+      prefHeight="48.0"
+      alignment="CENTER"
+      style="-fx-border-color: black">
+
+    <Label fx:id="labelNumber" />
+
+</VBox>
