@@ -24,7 +24,7 @@ public class SceneController implements Initializable {
 
 
     @FXML
-    private GridPane gridNumbers;
+    private GridPane mainGrid;
 
 
     private final Game game = Game.getInstance();
@@ -35,37 +35,56 @@ public class SceneController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         game.initialize();
-        createConstraints();
-        loadPositions();
+        loadTray();
         refresh();
     }
 
 
-    private void createConstraints() {
-        for (int i = 0; i < game.getSizeFromGrid(); i++) {
-            RowConstraints rowConstraints = new RowConstraints(48);
-            ColumnConstraints colConstraints = new ColumnConstraints(48);
-            gridNumbers.getRowConstraints().add(rowConstraints);
-            gridNumbers.getColumnConstraints().add(colConstraints);
+    private void loadTray() {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                GridPane block = createTrayBlock(row, col);
+                block.setStyle(
+                        """
+                        -fx-border-color: #334155;
+                        -fx-border-width: 1;
+                        -fx-padding: 3;
+                        """
+                );
+                mainGrid.add(block, col, row);
+            }
         }
     }
 
+    private GridPane createTrayBlock(int rowBlock, int colBlock) {
+        GridPane block = new GridPane();
+        PositionController controller;
+        FXMLLoader loader;
+        Node node;
 
-    private void loadPositions() {
-        int gridSize = game.getSizeFromGrid();
-        try {
-            for (int row = 0; row < gridSize; row++) {
-                for (int col = 0; col < gridSize; col++) {
-                    FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("position.fxml"));
-                    Node node = loader.load();
-                    positionControllers[row][col] = loader.getController();
-                    gridNumbers.add(node, col, row);
+        block.setHgap(3);
+        block.setVgap(3);
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                try {
+                    loader = new FXMLLoader(Launcher.class.getResource("position.fxml"));
+                    node = loader.load();
+                    controller = loader.getController();
+
+                    int rowIndex = rowBlock * 3 + row;
+                    int colIndex = colBlock * 3 + col;
+
+                    positionControllers[rowIndex][colIndex] = controller;
+                    block.add(node, col, row);
+                } catch (IOException e) {
+                    Popup.open(Alert.AlertType.ERROR)
+                            .show("Erro", e.getMessage());
                 }
             }
-        } catch (IOException e) {
-            Popup.open(Alert.AlertType.ERROR)
-                    .show("Erro", e.getMessage());
         }
+
+        return block;
     }
 
 

@@ -5,10 +5,10 @@
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="br.dev.fscarmo.sudoku.controllers.PositionController"
+      fx:id="vboxContainer"
       prefWidth="48.0"
       prefHeight="48.0"
-      alignment="CENTER"
-      style="-fx-border-color: black">
+      alignment="CENTER">
 
     <Label fx:id="labelNumber" />
 

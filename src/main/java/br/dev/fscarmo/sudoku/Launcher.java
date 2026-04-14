@@ -20,9 +20,10 @@ public class Launcher extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("scene.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root, 780, 520);
+        Scene scene = new Scene(root, 464, 464);
 
         stage.setTitle("Sudoku!");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

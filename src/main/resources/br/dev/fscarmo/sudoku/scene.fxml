@@ -13,10 +13,11 @@
 
     <HBox VBox.vgrow="ALWAYS">
         <VBox>
-            <GridPane fx:id="gridNumbers"
-                style="-fx-border-color: black"
-                prefWidth="432.00"
-                prefHeight="432.00"/>
+            <GridPane fx:id="mainGrid"
+                      hgap="2.00"
+                      vgap="2.00"
+                      prefWidth="432.00"
+                      prefHeight="432.00"/>
         </VBox>
         <VBox HBox.hgrow="ALWAYS">
 
