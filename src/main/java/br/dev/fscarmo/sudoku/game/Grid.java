@@ -50,7 +50,7 @@ public final class Grid {
                     int row = (rowBlock * 3) + (i / 3);
                     int col = (colBlock * 3) + (i % 3);
                     int idx = (row * sqrt + row / sqrt + col) % SIZE;
-                    var pos = new Position(shuffledNumbers.get(idx));
+                    var pos = new Position(row, col, shuffledNumbers.get(idx));
 
                     if (shuffledIndexes.contains(i))
                         pos.lock();

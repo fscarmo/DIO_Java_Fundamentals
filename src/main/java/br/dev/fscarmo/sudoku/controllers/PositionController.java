@@ -3,10 +3,12 @@ package br.dev.fscarmo.sudoku.controllers;
 
 import br.dev.fscarmo.sudoku.game.Position;
 
+import br.dev.fscarmo.sudoku.ui.Input;
 import br.dev.fscarmo.sudoku.ui.PositionState;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -18,9 +20,6 @@ public class PositionController implements Initializable {
 
     @FXML
     private VBox vboxContainer;
-
-    @FXML
-    private Label labelNumber;
 
 
     @Override
@@ -35,11 +34,15 @@ public class PositionController implements Initializable {
         if (position == null)
             return;
 
+        int positionRow = position.getGridRow();
+        int positionCol = position.getGridCol();
         boolean isSelected = position.isSelected();
         setSelection(isSelected);
 
         if (position.isSelected())
-            labelNumber.setText(String.valueOf(position.getNumber()));
+            vboxContainer.getChildren().add(new Label(String.valueOf(position.getNumber())));
+        else
+            vboxContainer.getChildren().add(Input.createNew(positionRow, positionCol));
     }
 
 
