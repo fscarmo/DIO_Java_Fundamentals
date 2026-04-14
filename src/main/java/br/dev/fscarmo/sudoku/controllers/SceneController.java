@@ -11,9 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,14 +34,16 @@ public class SceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         game.initialize();
         loadTray();
-        refresh();
+        setupGridPositions();
     }
 
 
     private void loadTray() {
+        GridPane block;
+
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                GridPane block = createTrayBlock(row, col);
+                block = createTrayBlock(row, col);
                 block.setStyle(
                         """
                         -fx-border-color: #334155;
@@ -55,6 +55,7 @@ public class SceneController implements Initializable {
             }
         }
     }
+
 
     private GridPane createTrayBlock(int rowBlock, int colBlock) {
         GridPane block = new GridPane();
@@ -88,11 +89,13 @@ public class SceneController implements Initializable {
     }
 
 
-    private void refresh() {
+    private void setupGridPositions() {
         int gridSize = game.getSizeFromGrid();
+        Position position;
+
         for (int row = 0; row < gridSize; row++) {
             for (int col = 0; col < gridSize; col++) {
-                Position position = game.getPositionFromGrid(row, col);
+                position = game.getPositionFromGrid(row, col);
                 positionControllers[row][col].setPosition(position);
             }
         }
