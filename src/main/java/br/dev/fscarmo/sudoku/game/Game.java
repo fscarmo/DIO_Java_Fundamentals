@@ -1,6 +1,9 @@
 package br.dev.fscarmo.sudoku.game;
 
 
+import br.dev.fscarmo.sudoku.ui.Popup;
+
+
 public class Game {
     private static volatile Game INSTANCE;
 
@@ -17,15 +20,18 @@ public class Game {
     }
 
 
-    private final Grid grid;
+    private int errors;
+    private Grid grid;
 
 
     private Game() {
-        grid = new Grid();
+        initialize();
     }
 
 
     public void initialize() {
+        errors = 0;
+        grid = new Grid();
         grid.initialize();
     }
 
@@ -40,7 +46,18 @@ public class Game {
     }
 
 
-    public boolean isFinished() {
-        return grid.isCompletelySelected();
+    public void increaseErrors() {
+        errors++;
+    }
+
+
+    public void checkStatus() {
+        if (grid.isCompletelySelected()) {
+            Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
+            initialize();
+        } else if (errors > 9) {
+            Popup.warning().show("Wops!", "Você atingiu o limite máximo de 10 erros. O jogo será reiniciado!");
+            initialize();
+        }
     }
 }

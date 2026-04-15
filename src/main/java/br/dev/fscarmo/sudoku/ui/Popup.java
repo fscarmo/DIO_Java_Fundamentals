@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 public final class Popup {
 
 
-    public Popup info() {
+    public static Popup info() {
         return new Popup(Alert.AlertType.INFORMATION);
     }
 

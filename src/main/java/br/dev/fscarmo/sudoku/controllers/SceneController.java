@@ -24,8 +24,8 @@ public class SceneController implements Initializable {
     @FXML
     private GridPane mainGrid;
 
-    private final Game game = Game.getInstance();
 
+    private final Game game = Game.getInstance();
     private final SpaceController[][] spaces
             = new SpaceController[game.getGridSize()][game.getGridSize()];
 
