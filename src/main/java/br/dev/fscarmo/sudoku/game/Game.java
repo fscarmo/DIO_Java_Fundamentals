@@ -2,6 +2,8 @@ package br.dev.fscarmo.sudoku.game;
 
 
 import br.dev.fscarmo.sudoku.ui.Popup;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 
 public class Game {
@@ -20,7 +22,7 @@ public class Game {
     }
 
 
-    private int errors;
+    private StringProperty errors;
     private Grid grid;
 
 
@@ -30,7 +32,7 @@ public class Game {
 
 
     public void initialize() {
-        errors = 0;
+        errors = new SimpleStringProperty("0");
         grid = new Grid();
         grid.initialize();
     }
@@ -47,7 +49,8 @@ public class Game {
 
 
     public void increaseErrors() {
-        errors++;
+        int numericErrors = Integer.parseInt(errors.get());
+        errors.set(String.valueOf(numericErrors + 1));
     }
 
 
@@ -55,7 +58,7 @@ public class Game {
         if (grid.isCompletelySelected()) {
             Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
             initialize();
-        } else if (errors > 9) {
+        } else if (errors.get().equals("10")) {
             Popup.warning().show("Wops!", "Você atingiu o limite máximo de 10 erros. O jogo será reiniciado!");
             initialize();
         }
