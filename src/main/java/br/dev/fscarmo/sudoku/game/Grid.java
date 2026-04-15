@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public final class Grid {
-    private static final short SIZE = 9;
+    public static final short SIZE = 9;
 
 
     private static List<Integer> generateShuffleNumbers() {
@@ -18,7 +18,6 @@ public final class Grid {
         Collections.shuffle(numbers);
         return numbers;
     }
-
 
     private static List<Integer> generateShuffledIndexes() {
         List<Integer> indexes = new ArrayList<>();
@@ -30,12 +29,12 @@ public final class Grid {
 
 
     private final int sqrt;
-    private final Position[][] positions;
+    private final Space[][] spaces;
 
 
     public Grid() {
         this.sqrt = (int) Math.sqrt(SIZE);
-        this.positions = new Position[SIZE][SIZE];
+        this.spaces = new Space[SIZE][SIZE];
     }
 
 
@@ -50,33 +49,28 @@ public final class Grid {
                     int row = (rowBlock * 3) + (i / 3);
                     int col = (colBlock * 3) + (i % 3);
                     int idx = (row * sqrt + row / sqrt + col) % SIZE;
-                    var pos = new Position(row, col, shuffledNumbers.get(idx));
+                    var pos = new Space(row, col, shuffledNumbers.get(idx));
 
                     if (shuffledIndexes.contains(i))
                         pos.lock();
 
-                    this.positions[row][col] = pos;
+                    this.spaces[row][col] = pos;
                 }
             }
         }
     }
 
 
-    public int getSize() {
-        return SIZE;
-    }
-
-
-    public Position getPosition(int row, int col) {
-        return positions[row][col];
+    public Space getPosition(final int row, final int col) {
+        return spaces[row][col];
     }
 
 
     public boolean isCompletelySelected() {
         int selectedCount = 0;
-        for (var rows : positions) {
+        for (var rows : spaces) {
             selectedCount += (int) Arrays.stream(rows)
-                    .filter(Position::isSelected)
+                    .filter(Space::isSelected)
                     .count();
         }
         return selectedCount == SIZE * SIZE;

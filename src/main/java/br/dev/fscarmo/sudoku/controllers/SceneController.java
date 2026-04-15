@@ -3,14 +3,14 @@ package br.dev.fscarmo.sudoku.controllers;
 
 import br.dev.fscarmo.sudoku.Launcher;
 import br.dev.fscarmo.sudoku.game.Game;
-
-import br.dev.fscarmo.sudoku.game.Position;
+import br.dev.fscarmo.sudoku.game.Space;
+import br.dev.fscarmo.sudoku.ui.Grid;
 import br.dev.fscarmo.sudoku.ui.Popup;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -24,79 +24,66 @@ public class SceneController implements Initializable {
     @FXML
     private GridPane mainGrid;
 
-
     private final Game game = Game.getInstance();
-    private final PositionController[][] positionControllers
-            = new PositionController[game.getSizeFromGrid()][game.getSizeFromGrid()];
+
+    private final SpaceController[][] spaces
+            = new SpaceController[game.getGridSize()][game.getGridSize()];
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         game.initialize();
-        loadTray();
-        setupGridPositions();
+        loadGrid();
+        setupGridSpaces();
     }
 
 
-    private void loadTray() {
-        GridPane block;
-
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                block = createTrayBlock(row, col);
-                block.setStyle(
-                        """
-                        -fx-border-color: #334155;
-                        -fx-border-width: 1;
-                        -fx-padding: 3;
-                        """
-                );
-                mainGrid.add(block, col, row);
+    private void loadGrid() {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                GridPane block = loadControlledBlock(r, c);
+                mainGrid.add(block, c, r);
             }
         }
     }
 
 
-    private GridPane createTrayBlock(int rowBlock, int colBlock) {
-        GridPane block = new GridPane();
-        PositionController controller;
-        FXMLLoader loader;
-        Node node;
+    private GridPane loadControlledBlock(final int rowBlock, final int colBlock) {
+        GridPane block = Grid.createNewBlock(3);
 
-        block.setHgap(3);
-        block.setVgap(3);
+        try {
+            for (int r = 0; r < 3; r++) {
+                for (int c = 0; c < 3; c++) {
+                    FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("space.fxml"));
+                    Node node = loader.load();
+                    SpaceController controller = loader.getController();
 
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                try {
-                    loader = new FXMLLoader(Launcher.class.getResource("position.fxml"));
-                    node = loader.load();
-                    controller = loader.getController();
+                    // Essencial para embaralhar os espaços dentro de cada bloco 3x3, sem permitir que isso gere
+                    // números repetidos nas linhas ou colunas dos outros blocos.
+                    int rowIndex = rowBlock * 3 + r;
+                    int colIndex = colBlock * 3 + c;
+                    spaces[rowIndex][colIndex] = controller;
 
-                    int rowIndex = rowBlock * 3 + row;
-                    int colIndex = colBlock * 3 + col;
-
-                    positionControllers[rowIndex][colIndex] = controller;
-                    block.add(node, col, row);
-                } catch (IOException e) {
-                    Popup.open(Alert.AlertType.ERROR)
-                            .show("Erro", e.getMessage());
+                    block.add(node, c, r);
                 }
             }
+        } catch (IOException e) {
+            Popup.error().show("Erro", e.getMessage());
         }
 
         return block;
     }
 
 
-    private void setupGridPositions() {
-        int gridSize = game.getSizeFromGrid();
-        Position position;
+    private void setupGridSpaces() {
+        int gridSize = game.getGridSize();
 
-        for (int row = 0; row < gridSize; row++) {
-            for (int col = 0; col < gridSize; col++) {
-                position = game.getPositionFromGrid(row, col);
-                positionControllers[row][col].setPosition(position);
+        for (int r = 0; r < gridSize; r++) {
+            for (int c = 0; c < gridSize; c++) {
+                Space space = game.getGridSpace(r, c);
+
+                spaces[r][c].setSpace(space);
+                spaces[r][c].refresh();
             }
         }
     }

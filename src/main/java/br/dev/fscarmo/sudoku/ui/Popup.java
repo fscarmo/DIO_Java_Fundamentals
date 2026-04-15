@@ -7,21 +7,29 @@ import javafx.scene.control.Alert;
 public final class Popup {
 
 
-    public static Popup open(Alert.AlertType alertType) {
-        return new Popup(alertType);
+    public Popup info() {
+        return new Popup(Alert.AlertType.INFORMATION);
+    }
+
+    public static Popup warning() {
+        return new Popup(Alert.AlertType.WARNING);
+    }
+
+    public static Popup error() {
+        return new Popup(Alert.AlertType.ERROR);
     }
 
 
-    private final Alert.AlertType alertType;
+    private final Alert.AlertType type;
 
 
-    private Popup(Alert.AlertType alertType) {
-        this.alertType = alertType;
+    private Popup(Alert.AlertType type) {
+        this.type = type;
     }
 
 
     public void show(String title, String message) {
-        Alert alert = new Alert(alertType);
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

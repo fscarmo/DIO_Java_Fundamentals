@@ -1,7 +1,7 @@
 package br.dev.fscarmo.sudoku.game;
 
 
-public final class Position {
+public final class Space {
 
 
     private final int gridRow;
@@ -10,7 +10,7 @@ public final class Position {
     private int guess;
 
 
-    public Position(int gridRow, int gridCol, int number) {
+    public Space(int gridRow, int gridCol, int number) {
         this.gridRow = gridRow;
         this.gridCol = gridCol;
         this.number = number;
@@ -38,11 +38,15 @@ public final class Position {
 
 
     public void guessTheNumber(int guess) throws IllegalArgumentException {
-        if (isSelected())
+        if (isSelected()) {
             return;
-        if (guess != number) {
-            throw new IllegalArgumentException("Palpite incorreto!");
         }
+
+        if (guess != number) {
+            throw new IllegalArgumentException(
+                    String.format("O número %d não pertence a este espaço!", guess));
+        }
+
         this.guess = guess;
     }
 

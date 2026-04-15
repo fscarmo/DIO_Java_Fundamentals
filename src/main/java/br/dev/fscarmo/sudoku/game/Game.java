@@ -30,13 +30,13 @@ public class Game {
     }
 
 
-    public Position getPositionFromGrid(int row, int col) {
+    public Space getGridSpace(int row, int col) {
         return grid.getPosition(row, col);
     }
 
 
-    public int getSizeFromGrid() {
-        return grid.getSize();
+    public int getGridSize() {
+        return Grid.SIZE;
     }
 
 

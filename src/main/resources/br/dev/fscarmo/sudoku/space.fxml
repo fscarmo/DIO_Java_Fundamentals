@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="br.dev.fscarmo.sudoku.controllers.PositionController"
+      fx:controller="br.dev.fscarmo.sudoku.controllers.SpaceController"
       fx:id="vboxContainer"
       prefWidth="48.0"
       prefHeight="48.0"
