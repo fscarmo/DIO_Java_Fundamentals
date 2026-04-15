@@ -19,6 +19,11 @@ public class SpaceController {
     private Space space;
 
 
+    public Space getSpace() {
+        return space;
+    }
+
+
     public void setSpace(Space space) {
         if (space == null) {
             return;
@@ -34,9 +39,7 @@ public class SpaceController {
             var text = Text.createNewText(number);
             vboxContainer.getChildren().add(text);
         } else {
-            int row = space.getGridRow();
-            int col = space.getGridCol();
-            var input = Input.createNew(this, row, col);
+            var input = Input.createNew(this);
             vboxContainer.getChildren().add(input);
         }
     }

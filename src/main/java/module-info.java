@@ -2,6 +2,7 @@ module br.dev.fscarmo.sudoku {
 
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
     opens br.dev.fscarmo.sudoku to javafx.fxml;
     exports br.dev.fscarmo.sudoku;

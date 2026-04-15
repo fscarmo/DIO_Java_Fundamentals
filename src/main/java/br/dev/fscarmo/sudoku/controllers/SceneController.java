@@ -2,6 +2,7 @@ package br.dev.fscarmo.sudoku.controllers;
 
 
 import br.dev.fscarmo.sudoku.Launcher;
+import br.dev.fscarmo.sudoku.game.Board;
 import br.dev.fscarmo.sudoku.game.Game;
 import br.dev.fscarmo.sudoku.game.Space;
 import br.dev.fscarmo.sudoku.ui.Grid;
@@ -25,14 +26,29 @@ public class SceneController implements Initializable {
     private GridPane mainGrid;
 
 
-    private final Game game = Game.getInstance();
-    private final SpaceController[][] spaces
-            = new SpaceController[game.getGridSize()][game.getGridSize()];
+    private final Game game = Game.currentGame();
+    private SpaceController[][] spaces;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        game.initialize();
+        loadScene();
+
+        game.addStateListener(state -> {
+            var board = (Board) state.getNewValue();
+            if (board.isEmpty()) {
+                mainGrid.getChildren().clear();
+                loadScene();
+            }
+        });
+    }
+
+
+    protected void loadScene() {
+        game.loadGame();
+
+        spaces = new SpaceController[game.getBoardSize()][game.getBoardSize()];
+
         loadGrid();
         setupGridSpaces();
     }
@@ -58,8 +74,6 @@ public class SceneController implements Initializable {
                     Node node = loader.load();
                     SpaceController controller = loader.getController();
 
-                    // Essencial para embaralhar os espaços dentro de cada bloco 3x3, sem permitir que isso gere
-                    // números repetidos nas linhas ou colunas dos outros blocos.
                     int rowIndex = rowBlock * 3 + r;
                     int colIndex = colBlock * 3 + c;
                     spaces[rowIndex][colIndex] = controller;
@@ -76,11 +90,11 @@ public class SceneController implements Initializable {
 
 
     private void setupGridSpaces() {
-        int gridSize = game.getGridSize();
+        int gridSize = game.getBoardSize();
 
         for (int r = 0; r < gridSize; r++) {
             for (int c = 0; c < gridSize; c++) {
-                Space space = game.getGridSpace(r, c);
+                Space space = game.getBoardSpace(r, c);
 
                 spaces[r][c].setSpace(space);
                 spaces[r][c].refresh();

@@ -6,12 +6,15 @@ import br.dev.fscarmo.sudoku.ui.Popup;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 
 public class Game {
     private static volatile Game INSTANCE;
 
 
-    public static Game getInstance() {
+    public static Game currentGame() {
         if (INSTANCE == null) {
             synchronized (Game.class) {
                 if (INSTANCE == null) {
@@ -23,29 +26,35 @@ public class Game {
     }
 
 
+    private Board board;
     private StringProperty errors;
-    private Grid grid;
+    private final PropertyChangeSupport state = new PropertyChangeSupport(this);
 
 
-    private Game() {
-        initialize();
+    private Game() {}
+
+
+    public Space getBoardSpace(int row, int col) {
+        return board.getSpace(row, col);
     }
 
 
-    public void initialize() {
+    public int getBoardSize() {
+        return Board.BOARD_SIZE;
+    }
+
+
+    public void loadGame() {
         errors = new SimpleStringProperty("0");
-        grid = new Grid();
-        grid.initialize();
+        board = new Board();
+
+        state.firePropertyChange("board", null, board);
+        board.initialize();
     }
 
 
-    public Space getGridSpace(int row, int col) {
-        return grid.getPosition(row, col);
-    }
-
-
-    public int getGridSize() {
-        return Grid.SIZE;
+    public void addStateListener(PropertyChangeListener listener) {
+        state.addPropertyChangeListener("board", listener);
     }
 
 
@@ -56,12 +65,12 @@ public class Game {
 
 
     public void checkStatus() {
-        if (grid.isCompletelySelected()) {
+        if (board.isCompletelySelected()) {
             Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
-            initialize();
+            loadGame();
         } else if (errors.get().equals("10")) {
             Popup.warning().show("Wops!", "Você atingiu o limite máximo de 10 erros. O jogo será reiniciado!");
-            initialize();
+            loadGame();
         }
     }
 }

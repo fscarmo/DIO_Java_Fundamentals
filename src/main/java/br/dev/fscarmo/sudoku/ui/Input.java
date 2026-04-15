@@ -13,8 +13,11 @@ import javafx.scene.layout.VBox;
 public abstract class Input {
 
 
-    public static TextField createNew(final SpaceController controller, final int row, final int col) {
+    public static TextField createNew(SpaceController controller) {
         var input = new TextField();
+
+        VBox.setVgrow(input, Priority.ALWAYS);
+        Actions.addFireGuess(controller, input);
 
         input.setAlignment(Pos.CENTER);
         input.setMaxWidth(Double.MAX_VALUE);
@@ -34,9 +37,6 @@ public abstract class Input {
             }
             return null;
         }));
-
-        Actions.addFireGuess(controller, input, row, col);
-        VBox.setVgrow(input, Priority.ALWAYS);
 
         return input;
     }
