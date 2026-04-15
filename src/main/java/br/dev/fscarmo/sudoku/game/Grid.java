@@ -19,6 +19,7 @@ public final class Grid {
         return numbers;
     }
 
+
     private static List<Integer> generateShuffledIndexes() {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < 9; i++)
