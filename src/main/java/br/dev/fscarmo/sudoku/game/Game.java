@@ -2,6 +2,7 @@ package br.dev.fscarmo.sudoku.game;
 
 
 import br.dev.fscarmo.sudoku.ui.Popup;
+
 import javafx.beans.property.SimpleStringProperty;
 
 import java.beans.PropertyChangeListener;
