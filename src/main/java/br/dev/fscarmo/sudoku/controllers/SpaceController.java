@@ -15,7 +15,6 @@ public class SpaceController {
     @FXML
     private VBox vboxContainer;
 
-
     private Space space;
 
 
@@ -32,7 +31,7 @@ public class SpaceController {
     }
 
 
-    public void refresh() {
+    public void load() {
         vboxContainer.getChildren().clear();
         if (space.isSelected()) {
             var number = space.getNumber();

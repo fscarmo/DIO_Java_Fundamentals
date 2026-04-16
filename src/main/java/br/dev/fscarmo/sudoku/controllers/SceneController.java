@@ -25,28 +25,27 @@ public class SceneController implements Initializable {
     @FXML
     private GridPane board;
 
-
     private final Game game = Game.currentGame();
-    private SpaceController[][] spaces;
+    private SpaceController[][] controllers;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadScene();
+        load();
 
         game.addStateListener(event -> {
             var state = (State) event.getNewValue();
             if (state != State.RUNNING) {
-                loadScene();
+                load();
             }
         });
     }
 
 
-    private void loadScene() {
+    private void load() {
         game.loadGame();
 
-        spaces = new SpaceController[game.getBoardSize()][game.getBoardSize()];
+        controllers = new SpaceController[game.getBoardSize()][game.getBoardSize()];
 
         loadBoard();
         setupBoardSpaces();
@@ -58,14 +57,14 @@ public class SceneController implements Initializable {
 
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
-                GridPane block = loadControlledBlock(r, c);
+                GridPane block = loadSpaceControllers(r, c);
                 board.add(block, c, r);
             }
         }
     }
 
 
-    private GridPane loadControlledBlock(final int rowBlock, final int colBlock) {
+    private GridPane loadSpaceControllers(final int rowBlock, final int colBlock) {
         GridPane block = Grid.createNewBlock(3);
 
         try {
@@ -77,7 +76,7 @@ public class SceneController implements Initializable {
 
                     int rowIndex = rowBlock * 3 + r;
                     int colIndex = colBlock * 3 + c;
-                    spaces[rowIndex][colIndex] = controller;
+                    controllers[rowIndex][colIndex] = controller;
 
                     block.add(node, c, r);
                 }
@@ -97,8 +96,8 @@ public class SceneController implements Initializable {
             for (int c = 0; c < boardSize; c++) {
                 Space space = game.getBoardSpace(r, c);
 
-                spaces[r][c].setSpace(space);
-                spaces[r][c].refresh();
+                controllers[r][c].setSpace(space);
+                controllers[r][c].load();
             }
         }
     }

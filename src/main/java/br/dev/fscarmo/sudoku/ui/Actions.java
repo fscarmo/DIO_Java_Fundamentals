@@ -17,7 +17,7 @@ public abstract class Actions {
                 var space = controller.getSpace();
                 var number = Integer.parseInt(input.getText());
                 space.guessTheNumber(number);
-                controller.refresh();
+                controller.load();
             } catch (IllegalArgumentException e) {
                 Popup.warning().show("Palpite incorreto", e.getMessage());
                 input.clear();
