@@ -75,7 +75,7 @@ public final class Board {
             var space = new Space(number);
 
             if (shuffledIndexes.contains(i)) {
-                space.lock();
+                space.fixNumber();
             }
 
             spaces[row][col] = space;

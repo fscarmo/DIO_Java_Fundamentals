@@ -2,6 +2,7 @@ package br.dev.fscarmo.sudoku.game;
 
 
 import br.dev.fscarmo.sudoku.ui.Popup;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -25,7 +26,7 @@ public class Game {
 
     private Board board;
     private State state;
-    private short errors;
+    private SimpleStringProperty errors = new SimpleStringProperty("0");
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 
@@ -49,7 +50,7 @@ public class Game {
 
 
     public void loadGame() {
-        errors = 0;
+        errors = new SimpleStringProperty("0");
         state = State.RUNNING;
         board = new Board();
         board.loadBoard();
@@ -62,7 +63,8 @@ public class Game {
 
 
     public void increaseErrors() {
-        errors++;
+        int errors = Integer.parseInt(this.errors.get());
+        this.errors.set(Integer.toString(errors + 1));
     }
 
 
@@ -70,9 +72,9 @@ public class Game {
         if (board.isCompletelySelected()) {
             setState(State.FINISHED);
             Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
-        } else if (errors > 10) {
+        } else if (errors.get().equals("10")) {
             setState(State.GAME_OVER);
-            Popup.warning().show("Wops!", "Você ultrapassou o limite de 10 erros. Tente novamente!");
+            Popup.warning().show("Wops!", "Você atingiu o limite de 10 erros. Tente novamente!");
         }
     }
 }

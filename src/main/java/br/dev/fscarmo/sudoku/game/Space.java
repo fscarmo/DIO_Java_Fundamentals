@@ -18,7 +18,7 @@ public final class Space {
     }
 
 
-    public void lock() {
+    public void fixNumber() {
         guess = number;
     }
 
