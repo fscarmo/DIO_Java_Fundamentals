@@ -3,9 +3,6 @@ package br.dev.fscarmo.sudoku.game;
 
 import br.dev.fscarmo.sudoku.ui.Popup;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -27,8 +24,9 @@ public class Game {
 
 
     private Board board;
-    private StringProperty errors;
-    private final PropertyChangeSupport state = new PropertyChangeSupport(this);
+    private State state;
+    private short errors;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 
     private Game() {}
@@ -44,32 +42,38 @@ public class Game {
     }
 
 
-    public void loadGame() {
-        errors = new SimpleStringProperty("0");
-        board = new Board();
+    public void setState(State state) {
+        support.firePropertyChange("state", this.state, state);
+        this.state = state;
+    }
 
-        state.firePropertyChange("board", null, board);
+
+    public void loadGame() {
+        errors = 0;
+        state = State.RUNNING;
+        board = new Board();
         board.initialize();
     }
 
 
     public void addStateListener(PropertyChangeListener listener) {
-        state.addPropertyChangeListener("board", listener);
+        support.addPropertyChangeListener("state", listener);
     }
 
 
     public void increaseErrors() {
-        int numericErrors = Integer.parseInt(errors.get());
-        errors.set(String.valueOf(numericErrors + 1));
+        errors++;
     }
 
 
     public void checkStatus() {
         if (board.isCompletelySelected()) {
+            setState(State.FINISHED);
             Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
             loadGame();
-        } else if (errors.get().equals("10")) {
-            Popup.warning().show("Wops!", "Você atingiu o limite máximo de 10 erros. O jogo será reiniciado!");
+        } else if (errors > 10) {
+            setState(State.GAME_OVER);
+            Popup.warning().show("Wops!", "Você ultrapassou o limite de 10 erros. O jogo será reiniciado!");
             loadGame();
         }
     }

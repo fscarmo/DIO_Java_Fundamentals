@@ -2,9 +2,9 @@ package br.dev.fscarmo.sudoku.controllers;
 
 
 import br.dev.fscarmo.sudoku.Launcher;
-import br.dev.fscarmo.sudoku.game.Board;
 import br.dev.fscarmo.sudoku.game.Game;
 import br.dev.fscarmo.sudoku.game.Space;
+import br.dev.fscarmo.sudoku.game.State;
 import br.dev.fscarmo.sudoku.ui.Grid;
 import br.dev.fscarmo.sudoku.ui.Popup;
 
@@ -34,10 +34,9 @@ public class SceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadScene();
 
-        game.addStateListener(state -> {
-            var board = (Board) state.getNewValue();
-            if (board.isEmpty()) {
-                mainGrid.getChildren().clear();
+        game.addStateListener(event -> {
+            var state = (State) event.getNewValue();
+            if (state != State.RUNNING) {
                 loadScene();
             }
         });
@@ -55,6 +54,8 @@ public class SceneController implements Initializable {
 
 
     private void loadGrid() {
+        mainGrid.getChildren().clear();
+
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 GridPane block = loadControlledBlock(r, c);
