@@ -13,7 +13,7 @@
 
     <HBox VBox.vgrow="ALWAYS">
         <VBox>
-            <GridPane fx:id="mainGrid"
+            <GridPane fx:id="board"
                       hgap="2.00"
                       vgap="2.00"
                       prefWidth="432.00"

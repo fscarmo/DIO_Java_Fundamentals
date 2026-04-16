@@ -70,11 +70,9 @@ public class Game {
         if (board.isCompletelySelected()) {
             setState(State.FINISHED);
             Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
-            loadGame();
         } else if (errors > 10) {
             setState(State.GAME_OVER);
-            Popup.warning().show("Wops!", "Você ultrapassou o limite de 10 erros. O jogo será reiniciado!");
-            loadGame();
+            Popup.warning().show("Wops!", "Você ultrapassou o limite de 10 erros. Uma nova partida foi iniciada!");
         }
     }
 }

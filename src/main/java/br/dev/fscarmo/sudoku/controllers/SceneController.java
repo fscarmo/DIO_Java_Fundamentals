@@ -23,7 +23,7 @@ public class SceneController implements Initializable {
 
 
     @FXML
-    private GridPane mainGrid;
+    private GridPane board;
 
 
     private final Game game = Game.currentGame();
@@ -43,7 +43,7 @@ public class SceneController implements Initializable {
     }
 
 
-    protected void loadScene() {
+    private void loadScene() {
         game.loadGame();
 
         spaces = new SpaceController[game.getBoardSize()][game.getBoardSize()];
@@ -54,12 +54,12 @@ public class SceneController implements Initializable {
 
 
     private void loadGrid() {
-        mainGrid.getChildren().clear();
+        board.getChildren().clear();
 
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 GridPane block = loadControlledBlock(r, c);
-                mainGrid.add(block, c, r);
+                board.add(block, c, r);
             }
         }
     }
