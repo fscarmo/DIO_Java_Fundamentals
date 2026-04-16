@@ -25,9 +25,9 @@ public class Game {
     }
 
 
-    private Board board;
     private State state;
-    private SimpleStringProperty errors = new SimpleStringProperty("0");
+    private Board board;
+    private final SimpleStringProperty errors = new SimpleStringProperty("0");
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 
@@ -51,10 +51,10 @@ public class Game {
 
 
     public void loadGame() {
-        errors = new SimpleStringProperty("0");
         state = State.RUNNING;
         board = new Board();
         board.loadBoard();
+        errors.set("0");
     }
 
 
