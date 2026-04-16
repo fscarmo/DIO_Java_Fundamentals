@@ -48,12 +48,12 @@ public class SceneController implements Initializable {
 
         spaces = new SpaceController[game.getBoardSize()][game.getBoardSize()];
 
-        loadGrid();
-        setupGridSpaces();
+        loadBoard();
+        setupBoardSpaces();
     }
 
 
-    private void loadGrid() {
+    private void loadBoard() {
         board.getChildren().clear();
 
         for (int r = 0; r < 3; r++) {
@@ -90,11 +90,11 @@ public class SceneController implements Initializable {
     }
 
 
-    private void setupGridSpaces() {
-        int gridSize = game.getBoardSize();
+    private void setupBoardSpaces() {
+        int boardSize = game.getBoardSize();
 
-        for (int r = 0; r < gridSize; r++) {
-            for (int c = 0; c < gridSize; c++) {
+        for (int r = 0; r < boardSize; r++) {
+            for (int c = 0; c < boardSize; c++) {
                 Space space = game.getBoardSpace(r, c);
 
                 spaces[r][c].setSpace(space);

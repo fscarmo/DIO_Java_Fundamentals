@@ -32,17 +32,12 @@ public final class Board {
     }
 
 
-    private Space[][] spaces = null;
-    private List<Integer> shuffledNumbers = null;
+    private Space[][] spaces;
+    private List<Integer> shuffledNumbers;
 
 
     public Space getSpace(final int row, final int col) {
         return spaces[row][col];
-    }
-
-
-    public boolean isEmpty() {
-        return spaces == null;
     }
 
 
@@ -57,7 +52,7 @@ public final class Board {
     }
 
 
-    public void initialize() {
+    public void loadBoard() {
         spaces = new Space[BOARD_SIZE][BOARD_SIZE];
         shuffledNumbers = generateShuffleNumbers();
 
@@ -77,7 +72,7 @@ public final class Board {
             int col = (colBlock * 3) + (i % 3);
             int index = (row * BLOCK_SIZE + row / BLOCK_SIZE + col) % BOARD_SIZE;
             int number = shuffledNumbers.get(index);
-            var space = new Space(row, col, number);
+            var space = new Space(number);
 
             if (shuffledIndexes.contains(i)) {
                 space.lock();

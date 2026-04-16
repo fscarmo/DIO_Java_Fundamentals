@@ -32,7 +32,7 @@ public class Game {
     private Game() {}
 
 
-    public Space getBoardSpace(int row, int col) {
+    public Space getBoardSpace(final int row, final int col) {
         return board.getSpace(row, col);
     }
 
@@ -52,7 +52,7 @@ public class Game {
         errors = 0;
         state = State.RUNNING;
         board = new Board();
-        board.initialize();
+        board.loadBoard();
     }
 
 
@@ -72,7 +72,7 @@ public class Game {
             Popup.info().show("Parabéns!", "Você acertou todos os números!!!");
         } else if (errors > 10) {
             setState(State.GAME_OVER);
-            Popup.warning().show("Wops!", "Você ultrapassou o limite de 10 erros. Uma nova partida foi iniciada!");
+            Popup.warning().show("Wops!", "Você ultrapassou o limite de 10 erros. Tente novamente!");
         }
     }
 }
