@@ -23,9 +23,13 @@ public final class Space {
     }
 
 
-    public void guessTheNumber(int guess) throws IllegalArgumentException {
+    public void guessTheNumber(final int guess) throws IllegalArgumentException {
         if (isSelected()) {
             return;
+        }
+        if (guess < 1 || guess > 9) {
+            throw new IllegalArgumentException(
+                    String.format("O valor %d não é permitido. Escolha um número de 1 a 9!", guess));
         }
         if (guess != number) {
             throw new IllegalArgumentException(
