@@ -143,18 +143,16 @@ public class SceneController implements Initializable {
 
     private void hideBoardSpaces() {
         if (controllers != null) {
-            Arrays.stream(controllers).forEach(controller -> {
-                Arrays.stream(controller).forEach(SpaceController::lock);
-            });
+            Arrays.stream(controllers).forEach(controller ->
+                    Arrays.stream(controller).forEach(SpaceController::lock));
         }
     }
 
 
     private  void showBoardSpaces() {
         if (controllers != null) {
-            Arrays.stream(controllers).forEach(controller -> {
-                Arrays.stream(controller).forEach(SpaceController::unlock);
-            });
+            Arrays.stream(controllers).forEach(controller ->
+                    Arrays.stream(controller).forEach(SpaceController::unlock));
         }
     }
 }
