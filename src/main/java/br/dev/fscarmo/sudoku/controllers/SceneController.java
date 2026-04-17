@@ -2,6 +2,7 @@ package br.dev.fscarmo.sudoku.controllers;
 
 
 import br.dev.fscarmo.sudoku.Launcher;
+import br.dev.fscarmo.sudoku.game.Board;
 import br.dev.fscarmo.sudoku.game.Game;
 import br.dev.fscarmo.sudoku.game.Space;
 import br.dev.fscarmo.sudoku.game.State;
@@ -97,10 +98,12 @@ public class SceneController implements Initializable {
 
 
     private void loadBoard() {
+        short blockSize = Board.BLOCK_SIZE;
+
         board.getChildren().clear();
 
-        for (int r = 0; r < 3; r++) {
-            for (int c = 0; c < 3; c++) {
+        for (int r = 0; r < blockSize; r++) {
+            for (int c = 0; c < blockSize; c++) {
                 GridPane block = loadSpaceControllers(r, c);
                 board.add(block, c, r);
             }
@@ -109,17 +112,18 @@ public class SceneController implements Initializable {
 
 
     private GridPane loadSpaceControllers(final int rowBlock, final int colBlock) {
+        short blockSize = Board.BLOCK_SIZE;
         GridPane block = Grid.createNewBlock(3);
 
         try {
-            for (int r = 0; r < 3; r++) {
-                for (int c = 0; c < 3; c++) {
+            for (int r = 0; r < blockSize; r++) {
+                for (int c = 0; c < blockSize; c++) {
                     FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("space.fxml"));
                     Node node = loader.load();
                     SpaceController controller = loader.getController();
 
-                    int rowIndex = rowBlock * 3 + r;
-                    int colIndex = colBlock * 3 + c;
+                    int rowIndex = rowBlock * blockSize + r;
+                    int colIndex = colBlock * blockSize + c;
                     controllers[rowIndex][colIndex] = controller;
 
                     block.add(node, c, r);
