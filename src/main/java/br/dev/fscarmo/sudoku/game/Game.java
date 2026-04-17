@@ -33,7 +33,7 @@ public class Game {
     private final SimpleStringProperty time = new  SimpleStringProperty("00:00:00");
 
 
-    int seconds = 0;
+    private short seconds = 0;
     private final Timeline timeline = new Timeline(
             new KeyFrame(Duration.seconds(1), _-> {
                 seconds++;
