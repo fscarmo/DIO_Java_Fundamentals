@@ -32,11 +32,12 @@ src
 
 ### Início
 
-Ao apertar `play`, o contador será iniciado e o jogador já pode começar a inserir os números, digitando o palpite de 1 a 9 e apertando a tecla `ENTER`.
+Ao apertar `play`, o contador será iniciado e o jogador já pode começar a inserir os números digitando o palpite de 1 a 9 e apertando a tecla `ENTER`.
+O jogo também poderá ser pausado ou reiniciado a qualquer momento!
 ###
 ![Play](.github/assets/Sudoku%20(1).png)
 
-O jogador poderá pausar o jogo a qualquer momento. Nesse caso, o contador será interrompido até que o jogador apertar `play` novamente. Os campos serão desabilitados e os palpites corretos serão ocultados, para evitar trapaças com o tempo 😏.
+Ao pausar o jogo, o contador será interrompido até que o jogador aperte `play` novamente, os campos serão desabilitados e os palpites corretos serão ocultados para evitar trapaças com o tempo ☝🏻🤨.
 ###
 ![Pause](.github/assets/Sudoku%20(2).png)
 
@@ -44,7 +45,7 @@ Se o jogador inserir um número inválido que não esteja no range de 1 a 9, o a
 ###
 ![Número inválido](.github/assets/Sudoku%20(4).png)
 
-Se o jogador inserir um número válido de 1 a 9, mas o palpite estiver incorreto, o algorítimo irá detectar e mostrar uma mensagem informativa.
+Se o jogador inserir um número válido de 1 a 9, mas o palpite estiver incorreto, o algorítimo irá detectar e mostrar uma mensagem de erro.
 ###
 ![Número incorreto](.github/assets/Sudoku%20(3).png)
 
