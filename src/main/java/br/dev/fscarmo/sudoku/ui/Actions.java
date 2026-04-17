@@ -11,8 +11,18 @@ public abstract class Actions {
 
 
     public static void addFireGuess(SpaceController controller, TextField input) {
-        final Game game = Game.currentGame();
         input.setOnAction(_ -> {
+            var value = input.getText();
+
+            if (!Game.current().isRunning()) {
+                Popup.warning().show("Wops!", "Aperte \"Play\" para iniciar o jogo!");
+                return;
+            }
+
+            if (value == null || value.isEmpty()) {
+                return;
+            }
+
             try {
                 var space = controller.getSpace();
                 var number = Integer.parseInt(input.getText());
@@ -21,9 +31,9 @@ public abstract class Actions {
             } catch (IllegalArgumentException e) {
                 Popup.warning().show("Palpite incorreto", e.getMessage());
                 input.clear();
-                game.increaseErrors();
+                Game.current().increaseErrors();
             } finally {
-                game.checkStatus();
+                Game.current().checkStatus();
             }
         });
     }

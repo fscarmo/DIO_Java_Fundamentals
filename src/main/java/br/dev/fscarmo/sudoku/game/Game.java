@@ -1,8 +1,6 @@
 package br.dev.fscarmo.sudoku.game;
 
 
-import br.dev.fscarmo.sudoku.ui.Popup;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +14,7 @@ public class Game {
     private static volatile Game INSTANCE;
 
 
-    public static Game currentGame() {
+    public static Game current() {
         if (INSTANCE == null) {
             synchronized (Game.class) {
                 if (INSTANCE == null) {
@@ -78,6 +76,11 @@ public class Game {
     }
 
 
+    public boolean isRunning() {
+        return state == State.RUNNING;
+    }
+
+
     public boolean isPaused() {
         return state == State.PAUSED;
     }
@@ -91,6 +94,7 @@ public class Game {
         errors.set("0");
         time.set("00:00:00");
         timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.stop();
 
         setState(State.PAUSED);
     }
@@ -125,16 +129,11 @@ public class Game {
 
     public void checkStatus() {
         if (board.isCompletelySelected()) {
+            timeline.stop();
             setState(State.FINISHED);
-            Popup.info().show("Parabéns!",
-                    String.format("Você acertou todos os números em %s após %s erros.\n O jogo será reiniciado!",
-                            time.get(),
-                            errors.get()
-                    )
-            );
         } else if (errors.get().equals("10")) {
+            timeline.stop();
             setState(State.GAME_OVER);
-            Popup.warning().show("Wops!", "Você atingiu o limite de 10 erros. Tente novamente!");
         }
     }
 }

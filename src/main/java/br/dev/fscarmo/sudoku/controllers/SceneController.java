@@ -41,16 +41,18 @@ public class SceneController implements Initializable {
     private Button btnPause;
 
 
-    private final Game currentGame = Game.currentGame();
+    private final Game game = Game.current();
+
+
     private SpaceController[][] controllers;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        labelErrors.textProperty().bind(currentGame.getErrors());
-        labelTime.textProperty().bind(currentGame.getTime());
+        labelErrors.textProperty().bind(game.getErrors());
+        labelTime.textProperty().bind(game.getTime());
 
-        currentGame.addStateListener(event -> {
+        game.addStateListener(event -> {
             var newState = (State) event.getNewValue();
             if (newState.equals(State.RUNNING)) {
                 btnPause.setDisable(false);
@@ -60,8 +62,12 @@ public class SceneController implements Initializable {
                 btnPause.setDisable(true);
                 btnPlay.setDisable(false);
                 hideBoardSpaces();
+            } else if (newState.equals(State.FINISHED)) {
+                Popup.confirm(this::loadScene)
+                        .show("Ganhou!", "Você acertou todos os números. O jogo será reiniciado!");
             } else {
-                loadScene();
+                Popup.confirm(this::loadScene)
+                        .show("Perdeu!", "Você cometeu 10 erros. O jogo será reiniciado!");
             }
         });
 
@@ -71,9 +77,9 @@ public class SceneController implements Initializable {
 
     @FXML
     private void loadScene() {
-        currentGame.loadGame();
+        game.loadGame();
 
-        controllers = new SpaceController[currentGame.getBoardSize()][currentGame.getBoardSize()];
+        controllers = new SpaceController[game.getBoardSize()][game.getBoardSize()];
 
         loadBoard();
         setupBoardSpaces();
@@ -82,10 +88,10 @@ public class SceneController implements Initializable {
 
     @FXML
     private void togglePlayAndPause() {
-        if (currentGame.isPaused()) {
-            currentGame.play();
+        if (game.isPaused()) {
+            game.play();
         } else {
-            currentGame.pause();
+            game.pause();
         }
     }
 
@@ -128,11 +134,11 @@ public class SceneController implements Initializable {
 
 
     private void setupBoardSpaces() {
-        int boardSize = currentGame.getBoardSize();
+        int boardSize = game.getBoardSize();
 
         for (int r = 0; r < boardSize; r++) {
             for (int c = 0; c < boardSize; c++) {
-                Space space = currentGame.getBoardSpace(r, c);
+                Space space = game.getBoardSpace(r, c);
 
                 controllers[r][c].setSpace(space);
                 controllers[r][c].load();
@@ -143,16 +149,14 @@ public class SceneController implements Initializable {
 
     private void hideBoardSpaces() {
         if (controllers != null) {
-            Arrays.stream(controllers).forEach(controller ->
-                    Arrays.stream(controller).forEach(SpaceController::lock));
+            Arrays.stream(controllers).forEach(c -> Arrays.stream(c).forEach(SpaceController::lock));
         }
     }
 
 
-    private  void showBoardSpaces() {
+    private void showBoardSpaces() {
         if (controllers != null) {
-            Arrays.stream(controllers).forEach(controller ->
-                    Arrays.stream(controller).forEach(SpaceController::unlock));
+            Arrays.stream(controllers).forEach(c -> Arrays.stream(c).forEach(SpaceController::unlock));
         }
     }
 }
