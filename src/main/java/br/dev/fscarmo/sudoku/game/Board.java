@@ -24,7 +24,7 @@ public final class Board {
 
     private static List<Integer> generateShuffledIndexes() {
         List<Integer> indexes = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
             indexes.add(i);
         }
         Collections.shuffle(indexes);
@@ -56,8 +56,8 @@ public final class Board {
         spaces = new Space[BOARD_SIZE][BOARD_SIZE];
         shuffledNumbers = generateShuffleNumbers();
 
-        for (int rowBlock = 0; rowBlock < 3; rowBlock++) {
-            for (int colBlock = 0; colBlock < 3; colBlock++) {
+        for (int rowBlock = 0; rowBlock < BLOCK_SIZE; rowBlock++) {
+            for (int colBlock = 0; colBlock < BLOCK_SIZE; colBlock++) {
                 loadSpacePerBlock(rowBlock, colBlock);
             }
         }
@@ -67,9 +67,9 @@ public final class Board {
     private void loadSpacePerBlock(final int rowBlock, final int colBlock) {
         List<Integer> shuffledIndexes = generateShuffledIndexes();
 
-        for (int i = 0; i < 9; i++) {
-            int row = (rowBlock * 3) + (i / 3);
-            int col = (colBlock * 3) + (i % 3);
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            int row = (rowBlock * BLOCK_SIZE) + (i / BLOCK_SIZE);
+            int col = (colBlock * BLOCK_SIZE) + (i % BLOCK_SIZE);
             int index = (row * BLOCK_SIZE + row / BLOCK_SIZE + col) % BOARD_SIZE;
             int number = shuffledNumbers.get(index);
             var space = new Space(number);
