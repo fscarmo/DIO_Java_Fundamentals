@@ -6,6 +6,8 @@ import br.dev.fscarmo.sudoku.ui.Input;
 import br.dev.fscarmo.sudoku.ui.Text;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 
@@ -15,6 +17,8 @@ public class SpaceController {
     @FXML
     private VBox vboxContainer;
 
+    private TextField input;
+    private Label text;
     private Space space;
 
 
@@ -34,12 +38,31 @@ public class SpaceController {
     public void load() {
         vboxContainer.getChildren().clear();
         if (space.isSelected()) {
-            var number = space.getNumber();
-            var text = Text.createNewText(number);
+            input = null;
+            text = Text.createNewText(space.getNumber());
             vboxContainer.getChildren().add(text);
         } else {
-            var input = Input.createNew(this);
+            text = null;
+            input = Input.createNew(this);
             vboxContainer.getChildren().add(input);
+        }
+    }
+
+
+    public void lock() {
+        if (input != null) {
+            input.setDisable(true);
+        } else if (text != null) {
+            text.setText(null);
+        }
+    }
+
+
+    public void unlock() {
+        if (input != null) {
+            input.setDisable(false);
+        } else if (text != null) {
+            text.setText(String.valueOf(space.getNumber()));
         }
     }
 }

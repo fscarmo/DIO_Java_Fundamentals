@@ -12,10 +12,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 
@@ -25,30 +28,65 @@ public class SceneController implements Initializable {
     @FXML
     private GridPane board;
 
-    private final Game game = Game.currentGame();
+    @FXML
+    private Label labelErrors;
+
+    @FXML
+    private Label labelTime;
+
+    @FXML
+    private Button btnPlay;
+
+    @FXML
+    private Button btnPause;
+
+
+    private final Game currentGame = Game.currentGame();
     private SpaceController[][] controllers;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        load();
+        labelErrors.textProperty().bind(currentGame.getErrors());
+        labelTime.textProperty().bind(currentGame.getTime());
 
-        game.addStateListener(event -> {
-            var state = (State) event.getNewValue();
-            if (state != State.RUNNING) {
-                load();
+        currentGame.addStateListener(event -> {
+            var newState = (State) event.getNewValue();
+            if (newState.equals(State.RUNNING)) {
+                btnPause.setDisable(false);
+                btnPlay.setDisable(true);
+                showBoardSpaces();
+            } else if (newState.equals(State.PAUSED)) {
+                btnPause.setDisable(true);
+                btnPlay.setDisable(false);
+                hideBoardSpaces();
+            } else {
+                loadScene();
             }
         });
+
+        loadScene();
     }
 
 
-    private void load() {
-        game.loadGame();
+    @FXML
+    private void loadScene() {
+        currentGame.loadGame();
 
-        controllers = new SpaceController[game.getBoardSize()][game.getBoardSize()];
+        controllers = new SpaceController[currentGame.getBoardSize()][currentGame.getBoardSize()];
 
         loadBoard();
         setupBoardSpaces();
+    }
+
+
+    @FXML
+    private void togglePlayAndPause() {
+        if (currentGame.isPaused()) {
+            currentGame.play();
+        } else {
+            currentGame.pause();
+        }
     }
 
 
@@ -90,15 +128,33 @@ public class SceneController implements Initializable {
 
 
     private void setupBoardSpaces() {
-        int boardSize = game.getBoardSize();
+        int boardSize = currentGame.getBoardSize();
 
         for (int r = 0; r < boardSize; r++) {
             for (int c = 0; c < boardSize; c++) {
-                Space space = game.getBoardSpace(r, c);
+                Space space = currentGame.getBoardSpace(r, c);
 
                 controllers[r][c].setSpace(space);
                 controllers[r][c].load();
             }
+        }
+    }
+
+
+    private void hideBoardSpaces() {
+        if (controllers != null) {
+            Arrays.stream(controllers).forEach(controller -> {
+                Arrays.stream(controller).forEach(SpaceController::lock);
+            });
+        }
+    }
+
+
+    private  void showBoardSpaces() {
+        if (controllers != null) {
+            Arrays.stream(controllers).forEach(controller -> {
+                Arrays.stream(controller).forEach(SpaceController::unlock);
+            });
         }
     }
 }
