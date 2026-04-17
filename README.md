@@ -50,4 +50,4 @@ Se o jogador inserir um número válido de 1 a 9, mas o palpite estiver incorret
 
 Após 10 erros, será considerado que o jogador falhou e o jogo será reiniciado.
 ###
-![Número incorreto](.github/assets/Sudoku%20(3).png)
+![Número incorreto](.github/assets/Sudoku%20(5).png)
