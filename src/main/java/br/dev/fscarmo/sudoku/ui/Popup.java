@@ -11,9 +11,11 @@ public final class Popup {
         return new Popup(Alert.AlertType.WARNING);
     }
 
+
     public static Popup error() {
         return new Popup(Alert.AlertType.ERROR);
     }
+
 
     public static Popup confirm(Runnable callback) {
         return new Popup(callback);
@@ -38,7 +40,7 @@ public final class Popup {
 
     public void show(String title, String message) {
         Alert alert = new Alert(type);
-        alert.setOnHidden(_ -> {
+        alert.setOnHidden(event -> {
             if (callback == null) return;
             callback.run();
         });

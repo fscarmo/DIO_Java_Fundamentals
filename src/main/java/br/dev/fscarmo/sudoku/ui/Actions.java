@@ -11,7 +11,7 @@ public abstract class Actions {
 
 
     public static void addFireGuess(SpaceController controller, TextField input) {
-        input.setOnAction(_ -> {
+        input.setOnAction(event -> {
             var value = input.getText();
 
             if (!Game.current().isRunning()) {

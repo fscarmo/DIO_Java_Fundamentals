@@ -11,11 +11,6 @@ import javafx.stage.Stage;
 public class Launcher extends Application {
 
 
-    static void main(String[] args) {
-        launch(Launcher.class, args);
-    }
-
-
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("scene.fxml"));

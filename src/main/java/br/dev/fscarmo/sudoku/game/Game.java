@@ -35,7 +35,7 @@ public class Game {
 
     private short seconds = 0;
     private final Timeline timeline = new Timeline(
-            new KeyFrame(Duration.seconds(1), _-> {
+            new KeyFrame(Duration.seconds(1), event -> {
                 seconds++;
 
                 int h = seconds / 3600;
