@@ -140,15 +140,11 @@ public class SceneController implements Initializable {
     private void handleGameStateChange(State newState) {
         switch (newState) {
             case RUNNING:
-                btnPause.setDisable(false);
-                btnPlay.setDisable(true);
-                showBoardSpaces();
+                toggleStateControls(true);
                 break;
 
             case PAUSED:
-                btnPause.setDisable(true);
-                btnPlay.setDisable(false);
-                hideBoardSpaces();
+                toggleStateControls(false);
                 break;
 
             case FINISHED:
@@ -164,16 +160,17 @@ public class SceneController implements Initializable {
     }
 
 
-    private void hideBoardSpaces() {
-        if (controllers != null) {
-            Arrays.stream(controllers).forEach(c -> Arrays.stream(c).forEach(SpaceController::lock));
-        }
-    }
+    private void toggleStateControls(final boolean isRunning) {
+        btnPause.setDisable(!isRunning);
+        btnPlay.setDisable(isRunning);
 
-
-    private void showBoardSpaces() {
         if (controllers != null) {
-            Arrays.stream(controllers).forEach(c -> Arrays.stream(c).forEach(SpaceController::unlock));
+            Arrays.stream(controllers).forEach(c -> {
+                if (isRunning)
+                    Arrays.stream(c).forEach(SpaceController::unlock);
+                else
+                    Arrays.stream(c).forEach(SpaceController::lock);
+            });
         }
     }
 }
