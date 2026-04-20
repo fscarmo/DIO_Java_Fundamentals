@@ -138,20 +138,28 @@ public class SceneController implements Initializable {
 
 
     private void handleGameStateChange(State newState) {
-        if (newState.equals(State.RUNNING)) {
-            btnPause.setDisable(false);
-            btnPlay.setDisable(true);
-            showBoardSpaces();
-        } else if (newState.equals(State.PAUSED)) {
-            btnPause.setDisable(true);
-            btnPlay.setDisable(false);
-            hideBoardSpaces();
-        } else if (newState.equals(State.FINISHED)) {
-            Popup.confirm(this::loadScene)
-                    .show("Ganhou!", "Você acertou todos os números. O jogo será reiniciado!");
-        } else {
-            Popup.confirm(this::loadScene)
-                    .show("Perdeu!", "Você cometeu 10 erros. O jogo será reiniciado!");
+        switch (newState) {
+            case RUNNING:
+                btnPause.setDisable(false);
+                btnPlay.setDisable(true);
+                showBoardSpaces();
+                break;
+
+            case PAUSED:
+                btnPause.setDisable(true);
+                btnPlay.setDisable(false);
+                hideBoardSpaces();
+                break;
+
+            case FINISHED:
+                Popup.confirm(this::loadScene)
+                        .show("Ganhou!", "Você acertou todos os números. O jogo será reiniciado!");
+                break;
+
+            default:
+                Popup.confirm(this::loadScene)
+                        .show("Perdeu!", "Você cometeu 10 erros. O jogo será reiniciado!");
+                break;
         }
     }
 
