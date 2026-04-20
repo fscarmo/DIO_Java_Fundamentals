@@ -55,21 +55,7 @@ public class SceneController implements Initializable {
 
         game.addStateListener(event -> {
             var newState = (State) event.getNewValue();
-            if (newState.equals(State.RUNNING)) {
-                btnPause.setDisable(false);
-                btnPlay.setDisable(true);
-                showBoardSpaces();
-            } else if (newState.equals(State.PAUSED)) {
-                btnPause.setDisable(true);
-                btnPlay.setDisable(false);
-                hideBoardSpaces();
-            } else if (newState.equals(State.FINISHED)) {
-                Popup.confirm(this::loadScene)
-                        .show("Ganhou!", "Você acertou todos os números. O jogo será reiniciado!");
-            } else {
-                Popup.confirm(this::loadScene)
-                        .show("Perdeu!", "Você cometeu 10 erros. O jogo será reiniciado!");
-            }
+            handleGameStateChange(newState);
         });
 
         loadScene();
@@ -147,6 +133,25 @@ public class SceneController implements Initializable {
                 controllers[r][c].setSpace(space);
                 controllers[r][c].load();
             }
+        }
+    }
+
+
+    private void handleGameStateChange(State newState) {
+        if (newState.equals(State.RUNNING)) {
+            btnPause.setDisable(false);
+            btnPlay.setDisable(true);
+            showBoardSpaces();
+        } else if (newState.equals(State.PAUSED)) {
+            btnPause.setDisable(true);
+            btnPlay.setDisable(false);
+            hideBoardSpaces();
+        } else if (newState.equals(State.FINISHED)) {
+            Popup.confirm(this::loadScene)
+                    .show("Ganhou!", "Você acertou todos os números. O jogo será reiniciado!");
+        } else {
+            Popup.confirm(this::loadScene)
+                    .show("Perdeu!", "Você cometeu 10 erros. O jogo será reiniciado!");
         }
     }
 
